@@ -4,6 +4,11 @@ set +e
 set -e
 
 set +e
-    eksctl --verbose 5 create nodegroup -f bootstrap-command.yaml
+    eksctl --verbose 5 create nodegroup -f bootstrap-command-control-plane.yaml --cfn-disable-rollback
+    echo "CREATE EXITED with: $?"
+set -e
+
+set +e
+    eksctl --verbose 5 create nodegroup -f bootstrap-command-worker.yaml --cfn-disable-rollback
     echo "CREATE EXITED with: $?"
 set -e

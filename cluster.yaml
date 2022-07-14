@@ -13,6 +13,10 @@ vpc:
     public:
       us-west-1a: { id: subnet-0bf7a9af06953a6d0 }
       us-west-1b: { id: subnet-065297ce07d91fcc5 }
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
+  securityGroup: "sg-039b1211845819902"
 
 managedNodeGroups:
   - name: mng-vpc-k8s-eks-worker
