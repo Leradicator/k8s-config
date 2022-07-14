@@ -3,6 +3,8 @@ set +e
     echo "CREATE EXITED with: $?"
 set -e
 
+eksctl create addon --name kube-proxy --cluster k8s-eks-in-this-vpc --force
+
 set +e
     eksctl --verbose 5 create nodegroup -f bootstrap-command-control-plane.yaml --cfn-disable-rollback
     echo "CREATE EXITED with: $?"

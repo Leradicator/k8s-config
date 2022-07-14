@@ -30,6 +30,7 @@ managedNodeGroups:
     tags:
       nodegroup-role: controlplane
       node-role.kubernetes.io/mng-vpc-k8s-eks-control: "true"
+      kubernetes.io/cluster/k8s-eks-in-this-vpc: "owned"
     iam:
       attachPolicyARNs:
         # EKS worker nodes require the following two policies at least

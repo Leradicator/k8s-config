@@ -18,7 +18,7 @@ managedNodeGroups:
     volumeIOPS: 3000
     volumeThroughput: 125
     disableIMDSv1: true
-    privateNetworking: true
+    #privateNetworking: true
     volumeEncrypted: false
     updateConfig:
       maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
@@ -36,6 +36,7 @@ managedNodeGroups:
     tags:
       nodegroup-role: worker
       node-role.kubernetes.io/mng-vpc-k8s-eks-control: "true"
+      kubernetes.io/cluster/k8s-eks-in-this-vpc: "owned"
     iam:
       attachPolicyARNs:
         # EKS worker nodes require the following two policies at least
@@ -57,5 +58,5 @@ vpc:
       us-west-1b: { id: subnet-065297ce07d91fcc5 }
   clusterEndpoints:
     publicAccess:  true
-    privateAccess: true
+    #privateAccess: true
   securityGroup: "sg-039b1211845819902"
