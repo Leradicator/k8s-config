@@ -1,21 +1,24 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: k8s-eks-final-vpc
+  name: k8s-eks-inside-vpc
   region: us-west-1
 managedNodeGroups:
-  - name: mng-vpc-k8s-eks
-    instanceType: t2.micro
+  - name: mng-vpc-k8s-eks-worker
+    labels: { cluster: k8s-eks-inside-vpc, role: worker, test: "yes" }
     minSize: 3
-    desiredCapacity: 4
     maxSize: 5
+    desiredCapacity: 4
     availabilityZones: ["us-west-1a", "us-west-1c"]
-    amiFamily: "AmazonLinux2"
+    instanceType: t2.micro
+    amiFamily: AmazonLinux2
     volumeSize: 30
     volumeName: /dev/xvda
     volumeType: 'gp3'
     volumeIOPS: 3000
     volumeThroughput: 125
+    disableIMDSv1: true
+    privateNetworking: true
     volumeEncrypted: false
     updateConfig:
       maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
@@ -24,7 +27,6 @@ managedNodeGroups:
     ssh:
       allow: true
       publicKeyName: vpc_key
-    labels: { cluster: k8s-eks-final-vpc, role: worker, test: "yes" }
     #taints:
     #- key: key1
     #  value: value1
@@ -33,6 +35,42 @@ managedNodeGroups:
     #  effect: NoExecute
     tags:
       nodegroup-role: worker
+    iam:
+      attachPolicyARNs:
+        # EKS worker nodes require the following two policies at least
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        imageBuilder: true
+        ebs: true
+        externalDNS: true
+        certManager: true
+  - name: ng-vpc-k8s-eks-control
+    labels: { cluster: k8s-eks-final-vpc, role: control-plane }
+    minSize: 1
+    maxSize: 3
+    desiredCapacity: 2
+    availabilityZones: ["us-west-1a", "us-west-1c"]
+    instanceType: t2.micro
+    amiFamily: AmazonLinux2
+    volumeSize: 10
+    volumeName: /dev/xvda
+    volumeType: 'gp3'
+    volumeIOPS: 3000
+    volumeThroughput: 125
+    disableIMDSv1: true
+    privateNetworking: true
+    volumeEncrypted: false
+    updateConfig:
+      maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
+    securityGroups:
+      attachIDs: ["sg-05ede5086ccf071eb"]
+    ssh:
+      allow: true
+      publicKeyName: vpc_key
+    tags:
+      nodegroup-role: control-plane
     iam:
       attachPolicyARNs:
         # EKS worker nodes require the following two policies at least

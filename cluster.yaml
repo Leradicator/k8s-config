@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: k8s-eks-final-vpc
+  name: k8s-eks-inside-vpc
   region: us-west-1
   version: "1.22"
 vpc:
@@ -15,30 +15,81 @@ vpc:
       us-west-1b: { id: subnet-065297ce07d91fcc5 }
 
 managedNodeGroups:
-  - name: ng-vpc-k8s-eks-worker
-    labels: { cluster: k8s-eks-final-vpc, role: workers }
-    desiredCapacity: 2
+  - name: mng-vpc-k8s-eks-worker
+    labels: { cluster: k8s-eks-inside-vpc, role: worker, test: "yes" }
+    minSize: 3
+    maxSize: 5
+    desiredCapacity: 4
+    availabilityZones: ["us-west-1a", "us-west-1c"]
     instanceType: t2.micro
     amiFamily: AmazonLinux2
-    securityGroups:
-     attachIDs: ["sg-07e0d6670f6f1babb"]
     #maxPodsPerNode: 50
-    ssh:
-      allow: true
-      publicKeyName: vpc_key
     volumeSize: 30
     volumeName: /dev/xvda
     volumeType: gp3
+    volumeIOPS: 3000
+    volumeThroughput: 125
     #volumeEncrypted: false
     disableIMDSv1: true
     privateNetworking: true
+    volumeEncrypted: false
+    updateConfig:
+      maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
+    securityGroups:
+      attachIDs: ["sg-05ede5086ccf071eb"]
+    ssh:
+      allow: true
+      publicKeyName: vpc_key
+    tags:
+      nodegroup-role: worker
+    iam:
+      attachPolicyARNs:
+        # EKS worker nodes require the following two policies at least
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        imageBuilder: true
+        ebs: true
+        externalDNS: true
+        certManager: true
+
     #overrideBootstrapCommand: |#!/bin/bash/etc/eks/bootstrap.sh managed-cluster --kubelet-extra-args '--node-labels=eks.amazonaws.com/nodegroup=ng-vpc-k8s-eks,eks.amazonaws.com/nodegroup-image=ami-0b40861606d59ca35'
     #overrideBootstrapCommand: |#!/bin/bash/etc/eks/bootstrap.sh managed-cluster --kubelet-extra-args '--node-labels=eks.amazonaws.com/nodegroup=ng-vpc-k8s-eks,eks.amazonaws.com/nodegroup-image=ami-0b40861606d59ca35'
   - name: ng-vpc-k8s-eks-control
     labels: { cluster: k8s-eks-final-vpc, role: control-plane }
+    minSize: 1
+    maxSize: 3
     desiredCapacity: 2
+    availabilityZones: ["us-west-1a", "us-west-1c"]
     instanceType: t2.micro
     amiFamily: AmazonLinux2
-    minSize: 2
-    maxSize: 3
+    volumeSize: 10
+    volumeName: /dev/xvda
+    volumeType: 'gp3'
+    volumeIOPS: 3000
+    volumeThroughput: 125
+    disableIMDSv1: true
+    privateNetworking: true
+    volumeEncrypted: false
+    updateConfig:
+      maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
+    securityGroups:
+      attachIDs: ["sg-05ede5086ccf071eb"]
+    ssh:
+      allow: true
+      publicKeyName: vpc_key
+    tags:
+      nodegroup-role: control-plane
+    iam:
+      attachPolicyARNs:
+        # EKS worker nodes require the following two policies at least
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        imageBuilder: true
+        ebs: true
+        externalDNS: true
+        certManager: true
 
