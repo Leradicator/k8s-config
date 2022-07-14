@@ -1,0 +1,44 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: k8s-eks-final-vpc
+  region: us-west-1
+  version: "1.22"
+vpc:
+  subnets:
+    private:
+      us-west-1b: { id: subnet-09afd15fa0221d767 }
+      us-west-1a: { id: subnet-0953d0985742e9aab }
+    public:
+      us-west-1a: { id: subnet-0bf7a9af06953a6d0 }
+      us-west-1b: { id: subnet-065297ce07d91fcc5 }
+
+managedNodeGroups:
+  - name: ng-vpc-k8s-eks-worker
+    labels: { cluster: k8s-eks-final-vpc, role: workers }
+    desiredCapacity: 2
+    instanceType: t2.micro
+    amiFamily: AmazonLinux2
+    securityGroups:
+     attachIDs: ["sg-07e0d6670f6f1babb"]
+    #maxPodsPerNode: 50
+    ssh:
+      allow: true
+      publicKeyName: vpc_key
+    volumeSize: 30
+    volumeName: /dev/xvda
+    volumeType: gp3
+    #volumeEncrypted: false
+    disableIMDSv1: true
+    privateNetworking: true
+    #overrideBootstrapCommand: |#!/bin/bash/etc/eks/bootstrap.sh managed-cluster --kubelet-extra-args '--node-labels=eks.amazonaws.com/nodegroup=ng-vpc-k8s-eks,eks.amazonaws.com/nodegroup-image=ami-0b40861606d59ca35'
+    #overrideBootstrapCommand: |#!/bin/bash/etc/eks/bootstrap.sh managed-cluster --kubelet-extra-args '--node-labels=eks.amazonaws.com/nodegroup=ng-vpc-k8s-eks,eks.amazonaws.com/nodegroup-image=ami-0b40861606d59ca35'
+  - name: ng-vpc-k8s-eks-control
+    labels: { cluster: k8s-eks-final-vpc, role: control-plane }
+    desiredCapacity: 2
+    instanceType: t2.micro
+    amiFamily: AmazonLinux2
+    minSize: 2
+    maxSize: 3
+

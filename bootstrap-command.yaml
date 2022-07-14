@@ -1,0 +1,50 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: k8s-eks-final-vpc
+  region: us-west-1
+managedNodeGroups:
+  - name: mng-vpc-k8s-eks
+    instanceType: t2.micro
+    minSize: 3
+    desiredCapacity: 4
+    maxSize: 5
+    availabilityZones: ["us-west-1a", "us-west-1c"]
+    amiFamily: "AmazonLinux2"
+    volumeSize: 30
+    volumeName: /dev/xvda
+    volumeType: 'gp3'
+    volumeIOPS: 3000
+    volumeThroughput: 125
+    volumeEncrypted: false
+    updateConfig:
+      maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
+    securityGroups:
+      attachIDs: ["sg-05ede5086ccf071eb"]
+    ssh:
+      allow: true
+      publicKeyName: vpc_key
+    labels: { cluster: k8s-eks-final-vpc, role: worker, test: "yes" }
+    #taints:
+    #- key: key1
+    #  value: value1
+    #  effect: NoSchedule
+    #- key: key2
+    #  effect: NoExecute
+    tags:
+      nodegroup-role: worker
+    iam:
+      attachPolicyARNs:
+        # EKS worker nodes require the following two policies at least
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        imageBuilder: true
+        ebs: true
+        externalDNS: true
+        certManager: true
+vpc:
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
