@@ -23,7 +23,7 @@ managedNodeGroups:
     updateConfig:
       maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
     securityGroups:
-      attachIDs: ["sg-05ede5086ccf071eb"]
+      attachIDs: ["sg-0465862f02bb16fb6"]
     ssh:
       allow: true
       publicKeyName: vpc_key
@@ -65,7 +65,7 @@ managedNodeGroups:
     updateConfig:
       maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
     securityGroups:
-      attachIDs: ["sg-05ede5086ccf071eb"]
+      attachIDs: ["sg-0c825fb6ee75545c0"]
     ssh:
       allow: true
       publicKeyName: vpc_key
