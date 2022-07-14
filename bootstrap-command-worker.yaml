@@ -1,11 +1,11 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: k8s-eks-inside-vpc
+  name: k8s-eks-in-this-vpc
   region: us-west-1
 managedNodeGroups:
   - name: mng-vpc-k8s-eks-worker
-    #labels: { cluster: k8s-eks-inside-vpc, role: worker, test: "yes" }
+    #labels: { cluster: k8s-eks-in-this-vpc, role: worker, test: "yes" }
     minSize: 3
     maxSize: 5
     desiredCapacity: 4
