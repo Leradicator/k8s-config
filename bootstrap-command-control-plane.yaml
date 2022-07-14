@@ -5,7 +5,7 @@ metadata:
   region: us-west-1
 managedNodeGroups:
   - name: mng-vpc-k8s-eks-control
-    #labels: { cluster: k8s-eks-final-vpc, role: control-plane }
+    labels: { cluster: k8s-eks-in-this-vpc, role: controlplane, test: "yes" }
     minSize: 1
     maxSize: 3
     desiredCapacity: 2
@@ -27,8 +27,9 @@ managedNodeGroups:
     ssh:
       allow: true
       publicKeyName: vpc_key
-    #tags:
-    #  nodegroup-role: control-plane
+    tags:
+      nodegroup-role: controlplane
+      node-role.kubernetes.io/mng-vpc-k8s-eks-control: "true"
     iam:
       attachPolicyARNs:
         # EKS worker nodes require the following two policies at least

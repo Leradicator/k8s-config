@@ -5,7 +5,7 @@ metadata:
   region: us-west-1
 managedNodeGroups:
   - name: mng-vpc-k8s-eks-worker
-    #labels: { cluster: k8s-eks-in-this-vpc, role: worker, test: "yes" }
+    labels: { cluster: k8s-eks-in-this-vpc, role: worker, test: "yes" }
     minSize: 3
     maxSize: 5
     desiredCapacity: 4
@@ -22,7 +22,7 @@ managedNodeGroups:
     volumeEncrypted: false
     updateConfig:
       maxUnavailable: 1 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
-    securityGroupIds:
+    securityGroups:
       attachIDs: ["sg-039b1211845819902"]
     ssh:
       allow: true
@@ -33,8 +33,9 @@ managedNodeGroups:
     #  effect: NoSchedule
     #- key: key2
     #  effect: NoExecute
-    #tags:
-    #  nodegroup-role: worker
+    tags:
+      nodegroup-role: worker
+      node-role.kubernetes.io/mng-vpc-k8s-eks-control: true
     iam:
       attachPolicyARNs:
         # EKS worker nodes require the following two policies at least
