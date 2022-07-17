@@ -2,7 +2,7 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: cluster-v1
+  name: cluster-v2
   region: eu-west-1
   version: "1.22"
 vpc:
@@ -18,12 +18,17 @@ vpc:
         id: subnet-0ad2e0b2c32198ef5
       private-eu-west-1b:
         id: subnet-0b168bcca3e60e0a3
+  clusterEndpoints:
+    privateAccess:  true
+  #securityGroup: "sg-03da67f2054d9f636"
 managedNodeGroups:
-  - name: worker
+  - name: dev
     labels:
       role: worker
       env: dev
-    availabilityZones: ["eu-west-1a", "eu-west-1b"]
+      cluster: cluster-v2
+    #availabilityZones: ["eu-west-1a", "eu-west-1b"]
+    #subnets already set
     instanceType: t2.micro
     amiFamily: AmazonLinux2
     volumeSize: 30
@@ -43,13 +48,23 @@ managedNodeGroups:
       publicKeyName: eu-west-1_vpckey
     tags:
       nodegroup-role: worker
-      node-role.kubernetes.io/worker: "true"
-      kubernetes.io/cluster/cluster-v1: "owned"
+      node-role.kubernetes.io/dev: "true"
+      kubernetes.io/cluster/cluster-v2: "owned"
     iam:
       attachPolicyARNs:
         # EKS worker nodes require the following two policies at least
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+          #- arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+      withAddonPolicies:
+        imageBuilder: true
+        #ebs: true
+        externalDNS: true
+        certManager: true
     subnets:
     - private-eu-west-1a
     - private-eu-west-1b
+    #securityGroups:
+    #  attachIDs: ["sg-03da67f2054d9f636"]

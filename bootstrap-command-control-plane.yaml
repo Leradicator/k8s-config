@@ -55,4 +55,4 @@ vpc:
   clusterEndpoints:
     publicAccess:  true
     #privateAccess: true
-  securityGroup: "sg-039b1211845819902"
+  securityGroup: "sg-08765397f6b1ded0e"

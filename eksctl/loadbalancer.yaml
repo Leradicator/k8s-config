@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-loadbalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "auto-delete=no"
+    service.beta.kubernetes.io/aws-load-balancer-security-groups: "sg-03da67f2054d9f636"
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-deployment
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
