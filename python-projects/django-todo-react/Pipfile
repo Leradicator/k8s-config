@@ -7,6 +7,11 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+pysqlite3 = "*"
+pip3 = "*"
+install = "*"
+pysqlite3-binary = "*"
+graphene-django = "*"
 
 [dev-packages]
 

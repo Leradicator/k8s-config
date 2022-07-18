@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+import mongoengine
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
     'corsheaders',
     'rest_framework',
     'todo',
+    'battlefront',
 ]
 
 MIDDLEWARE = [
@@ -77,13 +81,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+###DATABASES = {
+###    'default': {
+###        'ENGINE': 'django.db.backends.sqlite3',
+###        'NAME': BASE_DIR / 'db.sqlite3',
+###    }
+###}
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'db-name',
+        #'ENFORCE_SCHEMA': False,
+        #'CLIENT': {
+        #    'host': 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority'
+        #}  
     }
 }
 
+db_name='db-name'
+hostname='localhost'
+username='admin'
+pwd='admin'
+
+mongoengine.connect(db=db_name, host=hostname, username=username, password=pwd)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -132,3 +152,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = [
      'http://localhost:3000'
 ]
+
+# Default setup used for GraphQL functionality
+
+GRAPHENE = {
+    "SCHEMA": "django_root.schema.schema"
+}

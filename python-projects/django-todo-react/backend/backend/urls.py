@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from graphene_django.views import GraphQLView
 from rest_framework import routers
 from todo import views
 
@@ -23,5 +24,7 @@ router.register(r'todos', views.TodoView, 'todo')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #path("graphql", GraphQLView.as_view(graphiql=False)), #without GraphiQL API browser
+    path("graphql", GraphQLView.as_view(graphiql=True)), #with GraphiQL API browser
     path('api/', include(router.urls)),
 ]
