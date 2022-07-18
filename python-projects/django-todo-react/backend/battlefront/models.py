@@ -18,7 +18,7 @@ class Weapon(models.Model):
     endurance_modifier = models.IntegerField(default=6,
         help_text="endurance adder",
         validators=[validate_endurance_mod])
-    life_factor = models.FloatField(default=0.0,
+    life_factor = models.FloatField(default=1.0,
         help_text="life multiplier",
         validators=[validate_factor])
     life_modifier = models.IntegerField(default=0,

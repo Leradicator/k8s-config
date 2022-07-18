@@ -81,6 +81,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
+db_name='default_db'
+hostname='localhost:27017'
+username='user'
+pwd='password'
+
+mongoengine.connect(db=db_name, host=hostname, username=username, password=pwd)
+
 ###DATABASES = {
 ###    'default': {
 ###        'ENGINE': 'django.db.backends.sqlite3',
@@ -90,20 +98,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'db-name',
+        'NAME': 'default_db',
         #'ENFORCE_SCHEMA': False,
-        #'CLIENT': {
-        #    'host': 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority'
-        #}  
+        'CLIENT': {
+            #'host': 'mongodb://user:password@localhost:27017/default_db?authSource=admin'#&retryWrites=true&w=majority'
+            'host': 'mongodb://localhost:27017/default_db?authSource=admin&retryWrites=true&w=majority'
+        }  
     }
 }
-
-db_name='db-name'
-hostname='localhost'
-username='admin'
-pwd='admin'
-
-mongoengine.connect(db=db_name, host=hostname, username=username, password=pwd)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
