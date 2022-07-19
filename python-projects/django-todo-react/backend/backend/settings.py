@@ -110,7 +110,7 @@ DATABASES = {
 # Default setup used for GraphQL functionality
 
 GRAPHENE = {
-    "SCHEMA": "battlefront.schema.schema"
+    "SCHEMA": "schema.schema"
 }
 
 # Password validation
