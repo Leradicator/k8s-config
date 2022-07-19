@@ -39,11 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'graphene_django',
     'corsheaders',
     'rest_framework',
     'todo',
     'battlefront',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -107,6 +107,12 @@ DATABASES = {
     }
 }
 
+# Default setup used for GraphQL functionality
+
+GRAPHENE = {
+    "SCHEMA": "battlefront.schema.schema"
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -155,8 +161,3 @@ CORS_ORIGIN_WHITELIST = [
      'http://localhost:3000'
 ]
 
-# Default setup used for GraphQL functionality
-
-GRAPHENE = {
-    "SCHEMA": "django_root.schema.schema"
-}
