@@ -1,0 +1,6 @@
+[id]
+VXNlck5vZGU6NQ==
+[token]
+eyJ1c2VybmFtZSI6Im5ld191c2VyIiwiYWN0aW9uIjoiYWN0aXZhdGlvbiJ9:1oE7ky:CrlZhu0dtJ_sP7rD8G-gutbZkj6WsfE7AWLeQ_qMy3g
+[auth_token]
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im5ld191c2VyIiwiZXhwIjoxNjU4MzIxNjI1LCJvcmlnSWF0IjoxNjU4MzIxMzI1fQ._FgTAFfInYiB1hl_DD1lVCZV0-6LBJnsvind5V7BCH0
