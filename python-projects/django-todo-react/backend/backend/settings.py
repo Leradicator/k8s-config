@@ -110,7 +110,9 @@ DATABASES = {
 # Default setup used for GraphQL functionality
 
 GRAPHENE = {
-    "SCHEMA": "schema.schema"
+    "SCHEMA": "schema.schema",
+    "SCHEMA_OUTPUT": "data/schema.json",  # defaults to schema.json,
+    "SCHEMA_INDENT": 2,  # Defaults to None (displays all data on a single line)
 }
 
 # Password validation
