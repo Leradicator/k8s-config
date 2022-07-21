@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -104,11 +105,13 @@ mongoengine.connect(db=db_name, host=hostname, username=username, password=pwd)
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'default_db',
+        'NAME': os.environ.get('DB_NAME','default_db'),
+        'USER': os.environ.get('DB_USER','admin'),
+        'HOST': os.environ.get('DB_HOST','db'),
         #'ENFORCE_SCHEMA': False,
         'CLIENT': {
             #'host': 'mongodb://user:password@localhost:27017/default_db?authSource=admin'#&retryWrites=true&w=majority'
-            'host': 'mongodb://localhost:27017/default_db?authSource=admin&retryWrites=true&w=majority'
+            'host': 'mongodb://root:root@db:27017/default_db?authSource=admin&retryWrites=true&w=majority'
         }  
     }
 }

@@ -1,0 +1,40 @@
+version: '2'
+services:
+  web:
+    build: .
+    environment:
+      SECRET_KEY: "_(g#-==3_y-0fp(!dc_6=ukct@xeuz%k^1pdp8wc8ql3#4pjq"
+      HOST: '*'
+      DB_HOST: db
+      DB_NAME: mongo_db
+      DB_USER: root
+      DB_PASSWORD: root
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_PASSWORD: django-todo-react
+      DJANGO_SUPERUSER_EMAIL: issamoutassourt@gmail.com
+      DEBUG: 1
+    command: "python3 -u manage.py runserver 0.0.0.0:8000"
+    ports:
+     - "8000:8000"
+    volumes:
+     - .:/app
+    links:
+     - db
+
+  db:
+    image: mongo
+    container_name: mongo
+    restart: always
+    env_file: .env
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
+      - MONGO_INITDB_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_INITDB_PASSWORD=${MONGO_DB_PASSWORD}
+    volumes:
+      - ${PWD}/_data/mongo:/data/db
+      - ${PWD}/docker/_mongo/fixtures:/import
+      - ${PWD}/docker/_mongo/scripts/init.sh:/docker-entrypoint-initdb.d/setup.sh
+    ports:
+      - 27017:27017
