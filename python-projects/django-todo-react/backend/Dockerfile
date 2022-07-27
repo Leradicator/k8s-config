@@ -77,6 +77,7 @@ COPY --chown=django:django . /app
 ## Collect static files
 COPY nginx.conf /etc/nginx/nginx.conf
 #RUN python3 -u manage.py collectstatic --link
+RUN python3 -u manage.py migrate
 RUN python3 -u manage.py createsuperuser --noinput
 
 ## Now copy in our code, and run it

@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -90,9 +90,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 db_name='default_db'
-hostname='localhost:27017'
-username='user'
-pwd='password'
+hostname='mongo:27017'
+username='root'
+pwd='root'
 
 mongoengine.connect(db=db_name, host=hostname, username=username, password=pwd)
 
@@ -106,12 +106,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': os.environ.get('DB_NAME','default_db'),
-        'USER': os.environ.get('DB_USER','admin'),
-        'HOST': os.environ.get('DB_HOST','db'),
+        'USER': os.environ.get('DB_USER','root'),
+        'HOST': os.environ.get('DB_HOST','mongo'),
         #'ENFORCE_SCHEMA': False,
         'CLIENT': {
             #'host': 'mongodb://user:password@localhost:27017/default_db?authSource=admin'#&retryWrites=true&w=majority'
-            'host': 'mongodb://root:root@db:27017/default_db?authSource=admin&retryWrites=true&w=majority'
+            'host': 'mongodb://root:root@mongo:27017/default_db?authSource=admin&retryWrites=true&w=majority'
         }  
     }
 }

@@ -27,7 +27,7 @@ router = routers.DefaultRouter()
 router.register(r'todos', views.TodoView, 'todo')
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     #path("graphql", GraphQLView.as_view(graphiql=False)), #without GraphiQL API browser
     path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))), #with GraphiQL API browser
     path('api/', include(router.urls)),
