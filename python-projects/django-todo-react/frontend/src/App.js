@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Fighters from "./Components/Fighters";
 
-import { useQuery, gql } from '@apollo/client';
-
 class App extends Component {
 
   render() {
